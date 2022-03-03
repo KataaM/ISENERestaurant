@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AndroidERestaurant</string>
+    <string-array name="starter">
+        <item>Ceci</item>
+        <item>est</item>
+        <item>un</item>
+        <item>test</item>
+    </string-array>
 </resources>

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 
 class HomeActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -19,34 +20,27 @@ class HomeActivity : AppCompatActivity() {
     fun initButtons() {
         val btnStarter = findViewById<Button>(R.id.buttonStarter)
         btnStarter.setOnClickListener {
-            goToStarter()
+            goToCategory("starter")
+            //finish()
+            //Log.d("test","testLog");
         }
 
         val btnMainCourse = findViewById<Button>(R.id.buttonMainCourse)
         btnMainCourse.setOnClickListener {
-            goToMainCourse()
+            goToCategory("mainCourse")
+            //finish()
         }
 
         val btnDessert = findViewById<Button>(R.id.buttonDessert)
         btnDessert.setOnClickListener {
-            goToDessert()
+            goToCategory("dessert")
+            //finish()
         }
     }
-    fun goToStarter(){
+    fun goToCategory(selectedCategory : String){
         //Toast.makeText(this@HomeActivity, "you clicked on starter dish", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, StarterActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun goToMainCourse(){
-        //Toast.makeText(this@HomeActivity, "you clicked on starter dish", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, MainCourseActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun goToDessert(){
-        //Toast.makeText(this@HomeActivity, "you clicked on starter dish", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, DessertActivity::class.java)
+        val intent = Intent(this, CategoryActivity::class.java)
+        intent.putExtra("selectedCategory",selectedCategory)
         startActivity(intent)
     }
 }
