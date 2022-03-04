@@ -17,6 +17,11 @@ class HomeActivity : AppCompatActivity() {
         initButtons()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("HomeActivity","destruction HomeActivity")
+    }
+
     fun initButtons() {
         val btnStarter = findViewById<Button>(R.id.buttonStarter)
         btnStarter.setOnClickListener {
@@ -40,7 +45,11 @@ class HomeActivity : AppCompatActivity() {
     fun goToCategory(selectedCategory : String){
         //Toast.makeText(this@HomeActivity, "you clicked on starter dish", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, CategoryActivity::class.java)
-        intent.putExtra("selectedCategory",selectedCategory)
+        intent.putExtra(CATEGORY_KEY,selectedCategory)
         startActivity(intent)
+    }
+
+    companion object {
+        const val CATEGORY_KEY = "selectedCategory"
     }
 }

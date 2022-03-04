@@ -11,8 +11,6 @@ import fr.isen.fazzino.androiderestaurant.R
 class CategoryAdapter(private val dataSet: Array<String>) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-
-
     private lateinit var myListener : onItemClickListener
 
     interface onItemClickListener {
@@ -37,7 +35,6 @@ class CategoryAdapter(private val dataSet: Array<String>) :
             textView.setOnClickListener{
                 listener.onItemClick(adapterPosition)
             }
-
         }
     }
 
