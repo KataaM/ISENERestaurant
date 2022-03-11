@@ -37,18 +37,18 @@ class HomeActivity : AppCompatActivity() {
     fun initButtons() {
 
         binding.buttonStarter.setOnClickListener {
-            goToCategory("starter")
+            goToCategory("Entrées")
             //finish()
             //Log.d("test","testLog");
         }
 
         binding.buttonMainCourse.setOnClickListener {
-            goToCategory("mainCourse")
+            goToCategory("Plats")
             //finish()
         }
 
         binding.buttonDessert.setOnClickListener {
-            goToCategory("dessert")
+            goToCategory("Desserts")
             //finish()
         }
     }

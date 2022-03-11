@@ -15,6 +15,8 @@ import com.google.gson.Gson
 import fr.isen.fazzino.androiderestaurant.data.Category
 import fr.isen.fazzino.androiderestaurant.data.DataDish
 import fr.isen.fazzino.androiderestaurant.databinding.ActivityCategoryBinding
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
 
 
@@ -34,16 +36,18 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
         fillDataDishObject()
     }
 
-    fun goToDetailsView(selectedCategory: String) {
+    fun goToDetailsView(jsonSerializedObject: String, dishName: String?, categoryName: String?) {
         val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra(DETAILS_TITLE_KEY, selectedCategory)
-        intent.putExtra(DETAILS_TITLE_PARA, "testPara")
+        intent.putExtra(DATA_DISH_OBJECT_KEY, jsonSerializedObject)
+        intent.putExtra(HomeActivity.CATEGORY_KEY, categoryName)
+        intent.putExtra(DISH_NAME_KEY, dishName)
+
         startActivity(intent)
     }
 
     companion object {
-        const val DETAILS_TITLE_KEY = "detailsTitle"
-        const val DETAILS_TITLE_PARA = "detailsParagraph"
+        const val DATA_DISH_OBJECT_KEY = "dataDishObject"
+        const val DISH_NAME_KEY = "dataDishObject"
     }
 
     private fun fillDataDishObject() {
@@ -67,7 +71,7 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
         binding.categoryTitle.text = categoryName
 
         //TODO C DE LA MREDE
-        categoryName = "Entrées"
+//        categoryName = "Entrées"
         //END TODO
 
 
@@ -80,12 +84,13 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
         //itemsList =resources.getStringArray(R.array.starter)
 
         Log.d("test", dataDish.toString())
+        print(dataDish.toString())
 
-        val category: Category? =
+        val dishName: Category? =
             dataDish?.data?.find { categoryData -> categoryData.name_fr == categoryName }
 
-        if (category != null) {
-            val customAdapter = category?.let { CategoryAdapter(it) }
+        if (dishName != null) {
+            val customAdapter = dishName?.let { CategoryAdapter(it) }
             val layoutManager = LinearLayoutManager(applicationContext)
             binding.categoryList.layoutManager = layoutManager
             binding.categoryList.adapter = customAdapter
@@ -98,7 +103,12 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
                         "You clicked on item : $position",
                         Toast.LENGTH_SHORT
                     ).show()
-                    goToDetailsView("test")
+
+
+
+
+                    val json = Json.encodeToString(dataDish)
+                    goToDetailsView(json,dishName.name_fr,categoryName)
                 }
             })
         }
