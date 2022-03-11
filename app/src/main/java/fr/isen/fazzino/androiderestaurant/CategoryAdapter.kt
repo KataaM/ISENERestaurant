@@ -7,8 +7,10 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isen.fazzino.androiderestaurant.R
+import fr.isen.fazzino.androiderestaurant.data.Category
+import fr.isen.fazzino.androiderestaurant.data.DataDish
 
-class CategoryAdapter(private val dataSet: Array<String>) :
+class CategoryAdapter(private val dataSet:Category) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private lateinit var myListener : onItemClickListener
@@ -49,12 +51,11 @@ class CategoryAdapter(private val dataSet: Array<String>) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.textView.text = dataSet[position]
+        viewHolder.textView.text = dataSet.items.get(position).name_fr
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = dataSet.items.size
 }

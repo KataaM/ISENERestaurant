@@ -7,49 +7,62 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import fr.isen.fazzino.androiderestaurant.data.DataDish
+import fr.isen.fazzino.androiderestaurant.databinding.ActivityHomeBinding
+import org.json.JSONObject
 
 class HomeActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        //fillDataDishObject()
 
         initButtons()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("HomeActivity","destruction HomeActivity")
+        Log.d("HomeActivity", "destruction HomeActivity")
     }
 
     fun initButtons() {
-        val btnStarter = findViewById<Button>(R.id.buttonStarter)
-        btnStarter.setOnClickListener {
+
+        binding.buttonStarter.setOnClickListener {
             goToCategory("starter")
             //finish()
             //Log.d("test","testLog");
         }
 
-        val btnMainCourse = findViewById<Button>(R.id.buttonMainCourse)
-        btnMainCourse.setOnClickListener {
+        binding.buttonMainCourse.setOnClickListener {
             goToCategory("mainCourse")
             //finish()
         }
 
-        val btnDessert = findViewById<Button>(R.id.buttonDessert)
-        btnDessert.setOnClickListener {
+        binding.buttonDessert.setOnClickListener {
             goToCategory("dessert")
             //finish()
         }
     }
-    fun goToCategory(selectedCategory : String){
+
+    fun goToCategory(selectedCategory: String) {
         //Toast.makeText(this@HomeActivity, "you clicked on starter dish", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, CategoryActivity::class.java)
-        intent.putExtra(CATEGORY_KEY,selectedCategory)
+        intent.putExtra(CATEGORY_KEY, selectedCategory)
         startActivity(intent)
     }
 
     companion object {
         const val CATEGORY_KEY = "selectedCategory"
     }
+
+
 }

@@ -1,26 +1,32 @@
 package fr.isen.fazzino.androiderestaurant
 
 import android.os.Bundle
-import android.widget.TextView
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.CategoryAdapter
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import fr.isen.fazzino.androiderestaurant.data.DataDish
+import fr.isen.fazzino.androiderestaurant.databinding.ActivityDetailsBinding
+import org.json.JSONObject
 
-class DetailsActivity: AppCompatActivity() {
+
+class DetailsActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityDetailsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_details)
+        binding = ActivityDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val detailsTitle=intent.getStringExtra(CategoryActivity.DETAILS_TITLE_KEY)
-        val detailsParagraph=intent.getStringExtra(CategoryActivity.DETAILS_TITLE_PARA
+        val detailsTitle = intent.getStringExtra(CategoryActivity.DETAILS_TITLE_KEY)
+        val detailsParagraph = intent.getStringExtra(
+            CategoryActivity.DETAILS_TITLE_PARA
         )
 
-        val detailsTitleTextView = findViewById<TextView>(R.id.detailsTitle)
-        detailsTitleTextView.text = detailsTitle;
-
-        val detailsParagraphTextView = findViewById<TextView>(R.id.detailsTitle)
-        detailsParagraphTextView.text = detailsParagraph;
+        binding.detailsTitle.text = detailsTitle
+        binding.detailsParagraph.text = detailsTitle
     }
 }
