@@ -9,10 +9,12 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import fr.isen.fazzino.androiderestaurant.data.Category
 import fr.isen.fazzino.androiderestaurant.data.DataDish
+import fr.isen.fazzino.androiderestaurant.data.Dish
 import fr.isen.fazzino.androiderestaurant.databinding.ActivityDetailsBinding
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.json.JSONObject
+import java.util.*
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -24,25 +26,22 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val dataDish =
+            intent.getSerializableExtra(CategoryActivity.DATA_DISH_OBJECT_KEY) as Dish
 
-        val categoryName = intent.getStringExtra(HomeActivity.CATEGORY_KEY)
-        val detailsParagraph = intent.getStringExtra(CategoryActivity.DISH_NAME_KEY)
+        binding.detailsTitle.text = dataDish.name_fr
+
+        binding.detailsParagraph.text = dataDish.ingredients.joinToString(", ") {
+            it.name_fr.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
+        }
 
 
-        val dataDishSerializedString = intent.getSerializableExtra(CategoryActivity.DATA_DISH_OBJECT_KEY) as DataDish
-
-
-        //TODO Essayer de récupérer l'objet dataDish à travers l'intent ? c'est relou
-//        val dataDishObject = Json.decodeFromString<DataDish>(dataDishSerializedString as String)
-
-
-//        val dishName = dataDishObject?.data?.find { categoryData -> categoryData.name_fr == categoryName }
-
-        binding.detailsTitle.text = dataDishSerializedString.data.get(0).name_fr
+        binding.imageSlider.adapter = DetailImagePager(this,dataDish.images)
 //        binding.detailsParagraph.text = dishName?.name_fr
-
-
-
 //        val dishName: Category? =
 //            dataDish?.data?.find { categoryData -> categoryData.name_fr == categoryName }
 

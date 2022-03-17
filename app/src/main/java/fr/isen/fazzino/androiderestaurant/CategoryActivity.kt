@@ -12,11 +12,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.myapplication.CategoryAdapter
 import com.google.gson.Gson
-import fr.isen.fazzino.androiderestaurant.data.Category
 import fr.isen.fazzino.androiderestaurant.data.DataDish
 import fr.isen.fazzino.androiderestaurant.databinding.ActivityCategoryBinding
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.json.JSONObject
 
 
@@ -24,29 +21,17 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
 
     private lateinit var binding: ActivityCategoryBinding
 
-    private lateinit var customAdapter: CategoryAdapter
-    private lateinit var itemsList: ArrayList<String>
-    private var dataDish: DataDish? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.categoryList.layoutManager = LinearLayoutManager(this)
+        binding.categoryList.adapter = CategoryAdapter(arrayListOf()) {}
         fillDataDishObject()
-    }
-
-    fun goToDetailsView(jsonSerializedObject: String, dishName: String?, categoryName: String?) {
-        val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra(DATA_DISH_OBJECT_KEY, jsonSerializedObject)
-        intent.putExtra(HomeActivity.CATEGORY_KEY, categoryName)
-        intent.putExtra(DISH_NAME_KEY, dishName)
-
-        startActivity(intent)
     }
 
     companion object {
         const val DATA_DISH_OBJECT_KEY = "dataDishObject"
-        const val DISH_NAME_KEY = "dataDishObject"
     }
 
     private fun fillDataDishObject() {
@@ -69,40 +54,22 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
         var categoryName = intent.getStringExtra(HomeActivity.CATEGORY_KEY)
         binding.categoryTitle.text = categoryName
 
-        val str = response.toString()
+        val dataDish = Gson().fromJson(response.toString(), DataDish::class.java)
 
-        val gson = Gson()
-        dataDish = gson.fromJson(str, DataDish::class.java)
+        //  val dishName: Category? =
+        //dataDish?.data?.find { categoryData -> categoryData.name_fr == categoryName }
 
-        val dishName: Category? =
-            dataDish?.data?.find { categoryData -> categoryData.name_fr == categoryName }
+        val dishName = dataDish.data.firstOrNull{it.name_fr == categoryName}?.items ?: arrayListOf()
 
-        if (dishName != null) {
-            val customAdapter = dishName?.let { CategoryAdapter(it) }
-            val layoutManager = LinearLayoutManager(applicationContext)
-            binding.categoryList.layoutManager = layoutManager
-            binding.categoryList.adapter = customAdapter
+        val categoryAdapter =CategoryAdapter(dishName){
 
-            customAdapter?.setOnItemClickListener(object : CategoryAdapter.onItemClickListener {
-                override fun onItemClick(position: Int) {
+            val intent = Intent(this@CategoryActivity, DetailsActivity::class.java)
 
-                    Toast.makeText(
-                        this@CategoryActivity,
-                        "You clicked on item : $position",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-
-                    val intent = Intent(this@CategoryActivity, DetailsActivity::class.java)
-
-                    intent.putExtra(DATA_DISH_OBJECT_KEY, dataDish)
-                    startActivity(intent)
-
-                    //val json = Json.encodeToString(dataDish)
-                    //goToDetailsView(json,dishName.name_fr,categoryName)
-                }
-            })
+            intent.putExtra(DATA_DISH_OBJECT_KEY,it)
+            startActivity(intent)
         }
+
+        binding.categoryList.adapter = categoryAdapter
     }
 }
 
