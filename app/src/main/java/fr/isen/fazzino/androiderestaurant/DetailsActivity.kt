@@ -29,7 +29,7 @@ class DetailsActivity : AppCompatActivity() {
         val detailsParagraph = intent.getStringExtra(CategoryActivity.DISH_NAME_KEY)
 
 
-        val dataDishSerializedString = intent.getSerializableExtra(CategoryActivity.DATA_DISH_OBJECT_KEY)
+        val dataDishSerializedString = intent.getSerializableExtra(CategoryActivity.DATA_DISH_OBJECT_KEY) as DataDish
 
 
         //TODO Essayer de récupérer l'objet dataDish à travers l'intent ? c'est relou
@@ -38,7 +38,7 @@ class DetailsActivity : AppCompatActivity() {
 
 //        val dishName = dataDishObject?.data?.find { categoryData -> categoryData.name_fr == categoryName }
 
-        binding.detailsTitle.text = detailsParagraph
+        binding.detailsTitle.text = dataDishSerializedString.data.get(0).name_fr
 //        binding.detailsParagraph.text = dishName?.name_fr
 
 

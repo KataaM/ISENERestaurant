@@ -1,8 +1,8 @@
 package fr.isen.fazzino.androiderestaurant.data
 
-import kotlinx.serialization.Serializable
+import java.io.Serializable
 
-@Serializable
+
 data class Dish(
 
     val id: Int,
@@ -14,4 +14,4 @@ data class Dish(
     var images : List<String>,
     var ingredients : List<Ingredients>,
     var prices :  List<Price>,
-)
+): Serializable

@@ -1,8 +1,8 @@
 package fr.isen.fazzino.androiderestaurant.data
 
-import kotlinx.serialization.Serializable
+import java.io.Serializable
 
-@Serializable
+
 data class Ingredients(
     val id: Int,
     val id_shop:Int,
@@ -11,4 +11,4 @@ data class Ingredients(
     val create_date:String,
     val update_date:String,
     var id_pizza :  Int,
-)
+): Serializable

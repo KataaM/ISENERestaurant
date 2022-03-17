@@ -32,7 +32,6 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
         super.onCreate(savedInstanceState)
         binding = ActivityCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fillDataDishObject()
     }
 
@@ -70,21 +69,10 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
         var categoryName = intent.getStringExtra(HomeActivity.CATEGORY_KEY)
         binding.categoryTitle.text = categoryName
 
-        //TODO C DE LA MREDE
-//        categoryName = "Entrées"
-        //END TODO
-
-
         val str = response.toString()
-        Log.d("GFO", "response: $str")
 
         val gson = Gson()
         dataDish = gson.fromJson(str, DataDish::class.java)
-
-        //itemsList =resources.getStringArray(R.array.starter)
-
-        Log.d("test", dataDish.toString())
-        print(dataDish.toString())
 
         val dishName: Category? =
             dataDish?.data?.find { categoryData -> categoryData.name_fr == categoryName }
@@ -105,15 +93,16 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
                     ).show()
 
 
+                    val intent = Intent(this@CategoryActivity, DetailsActivity::class.java)
 
+                    intent.putExtra(DATA_DISH_OBJECT_KEY, dataDish)
+                    startActivity(intent)
 
-                    val json = Json.encodeToString(dataDish)
-                    goToDetailsView(json,dishName.name_fr,categoryName)
+                    //val json = Json.encodeToString(dataDish)
+                    //goToDetailsView(json,dishName.name_fr,categoryName)
                 }
             })
         }
-
-
     }
 }
 
