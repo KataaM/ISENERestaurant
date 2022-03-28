@@ -1,20 +1,14 @@
 package fr.isen.fazzino.androiderestaurant
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
-import fr.isen.fazzino.androiderestaurant.data.Category
-import fr.isen.fazzino.androiderestaurant.data.DataDish
 import fr.isen.fazzino.androiderestaurant.data.Dish
 import fr.isen.fazzino.androiderestaurant.databinding.ActivityDetailsBinding
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -41,8 +35,9 @@ class DetailsActivity : AppCompatActivity() {
 
 
         binding.imageSlider.adapter = DetailImagePager(this,dataDish.images)
+        binding.imageSlider.setPageTransformer(DephtPageTransformer()) //Set the transformer for smoooooooth transition between images
 
-        binding.priceButton.text = dataDish.prices[0].price.toString() + " €"
+        binding.priceButton.text = "Total : " + dataDish.prices[0].price.toString() + " €"
 //        binding.detailsParagraph.text = dishName?.name_fr
 //        val dishName: Category? =
 //            dataDish?.data?.find { categoryData -> categoryData.name_fr == categoryName }
@@ -51,6 +46,11 @@ class DetailsActivity : AppCompatActivity() {
         binding.quantityTextView.text = "1"
 
         setUpListener()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar,menu)
+        return true
     }
 
     fun setUpListener(){
@@ -67,6 +67,10 @@ class DetailsActivity : AppCompatActivity() {
             count++
             refreshTextView(count)
         }
+
+        binding.priceButton.setOnClickListener {
+            addToCart()
+        }
     }
 
     fun refreshTextView(count : Float){
@@ -74,7 +78,44 @@ class DetailsActivity : AppCompatActivity() {
             intent.getSerializableExtra(CategoryActivity.DATA_DISH_OBJECT_KEY) as Dish
 
         val price = count * dataDish.prices[0].price
-        binding.quantityTextView.text = count.toString()
-        binding.priceButton.text = price.toString() + " €"
+        binding.quantityTextView.text = count.roundToInt().toString()
+        binding.priceButton.text = "Total : " + price.toString() + " €"
     }
+
+    fun addToCart(){
+        var zz = ArrayList<String>()
+
+//        zz.add("a")
+//        zz.add("a")
+//        zz.add("a")
+//
+//        val gson =GsonBuilder().setPrettyPrinting().create()
+//        val jsonPath = "C:\\Users\\Greg\\git\\ISENERestaurant\\app\\src\\main\\java\\fr\\isen\\fazzino\\androiderestaurant\\jsonFile.json"
+//        File(jsonPath).createNewFile()
+//        val file = File(jsonPath)
+//        file.writeText("gson.toJson(zz")
+
+
+//        val sharedPref = this.getSharedPreferences(SHAREDFILENAME, Context.MODE_PRIVATE)
+//        val editSharePref = sharedPref.edit()
+//        editSharePref.putInt(DetailsActivity.CART_ITEM_COUNT,0)
+//        editSharePref.commit()
+
+        //TODO CA CEST LES SHAREPREF MAIS GENRE IL FAUT CREER UNE CARTE ACTIVITE RELIER A TOUTES LES ACTIVITES
+        //TODO JE PENSE QUE LES SHARED PREFS MARCHE faut juste set à 0 de base et après ça ajoute au fur et à mesure qu'on ajoute dans le panier.
+
+        //TODO En fait j'ai pas finis :)
+
+        val sharedPref = this.getSharedPreferences(SHARED_FILENAME, Context.MODE_PRIVATE)
+        val editSharePref = sharedPref.edit()
+        editSharePref.putInt(CART_ITEM_COUNT,sharedPref.getInt(CART_ITEM_COUNT,0)+1)
+        editSharePref.apply()
+    }
+
+    companion object {
+        const val CART_ITEM_COUNT = "cart_item_count"
+        const val SHARED_FILENAME = "mySharedFile"
+
+    }
+
 }

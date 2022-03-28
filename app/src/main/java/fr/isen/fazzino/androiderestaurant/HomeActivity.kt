@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -27,6 +29,19 @@ class HomeActivity : AppCompatActivity() {
         //fillDataDishObject()
 
         initButtons()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.toolbar_cart -> Toast.makeText(this,"Toolbar Cart selected",Toast.LENGTH_SHORT ).show()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

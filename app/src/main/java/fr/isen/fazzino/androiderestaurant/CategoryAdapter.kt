@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso
 import fr.isen.fazzino.androiderestaurant.R
 import fr.isen.fazzino.androiderestaurant.data.Category
 import fr.isen.fazzino.androiderestaurant.data.Dish
+import kotlin.math.roundToInt
 
 class CategoryAdapter(private val dataSet: List<Dish>, val mListener: (Dish) -> Unit) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {

@@ -3,6 +3,7 @@ package fr.isen.fazzino.androiderestaurant
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,6 +48,11 @@ class CategoryActivity : AppCompatActivity(), Response.Listener<JSONObject> {
                 Log.d("GFO", "response: ${error.message}")
             })
         queu.add(ahReq)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar,menu)
+        return true
     }
 
     override fun onResponse(response: JSONObject?) {
